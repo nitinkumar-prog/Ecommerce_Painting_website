@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NK Art Store</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<header class="navbar">
+  <div class="logo">
+    <img src="Black and White Modern Personal Logo.png" alt="NK Art Logo">
+  </div>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="original.html">Original</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="canvas.html">Canvas</a>
+    <a href="about.html">About</a>
+  </nav>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="overlay">
+    <h1>NK ORIGINAL<br>ARTWORKS</h1>
+
+    <!-- Typing Text -->
+    <p id="typing-text"></p>
+
+    <button>View The Collection</button>
+  </div>
+</section>
+
+<!-- Products Section -->
+<section class="products">
+  <h2>New Releases</h2>
+
+  <div class="product-grid">
+
+    <div class="card">
+      <img src="cart1.webp">
+      <div class="card-info">
+        <p>Banaras Ghat India</p>
+        <span>₹4099</span>
+      </div>
+    <button onclick="addToCart('Silent Forest', 2200)">Add to Cart</button>
+    </div>
+
+    <div class="card">
+      <img src="card2.jpg">
+      <div class="card-info">
+        <p>Indian Women</p>
+        <span>₹4099</span>
+      </div>
+     <button onclick="addToCart('Indian Women', 4099)">Add to Cart</button>
+    </div>
+
+    <div class="card">
+      <img src="card3.jpeg">
+      <div class="card-info">
+        <p>Beautiful Landscape</p>
+        <span>₹4099</span>
+      </div>
+      <button onclick="addToCart('Beautiful Landscape', 4099)">Add to Cart</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- JavaScript -->
+<script src="script.js"></script>
+
+</body>
+</html>
