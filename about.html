@@ -13,12 +13,29 @@
   padding: 0;
   box-sizing: border-box;
   font-family:"Lucida Bright";
-
 }
 
 img {
   max-width: 100%;
   height: auto;
+}
+
+/* LOGO */
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  width: 45px;
+  margin-right: 10px;
+}
+
+.logo::after {
+  content: "NK Art Store";
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
 }
 
 /* NAVBAR */
@@ -28,22 +45,63 @@ img {
   width: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 15px 40px;
   background: rgba(0,0,0,0.6);
-  color: white;
   backdrop-filter: blur(6px);
+  color: white;
   z-index: 1000;
 }
 
-.navbar a {
+/* NAV LINKS */
+.nav-links {
+  display: flex;
+}
+
+.nav-links a {
   color: white;
   margin-left: 20px;
   text-decoration: none;
   transition: 0.3s;
 }
 
-.navbar a:hover {
+.nav-links a:hover {
   color: red;
+}
+
+/* HAMBURGER */
+.menu-toggle {
+  display: none;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+/* MOBILE NAV */
+@media (max-width: 768px){
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: black;
+    flex-direction: column;
+    display: none;
+  }
+
+  .nav-links a {
+    padding: 15px;
+    border-top: 1px solid #333;
+    margin: 0;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
 }
 
 /* HERO */
@@ -123,7 +181,6 @@ img {
   border: none;
   cursor: pointer;
   border-radius: 20px;
-  transition: 0.3s;
 }
 
 .cta button:hover {
@@ -132,11 +189,6 @@ img {
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 
   .grid {
     grid-template-columns: 1fr;
@@ -153,16 +205,23 @@ img {
 <body>
 
 <!-- NAVBAR -->
-<div class="navbar">
-  <h2>NK Art Store</h2>
-  <div>
+<header class="navbar">
+
+  <div class="logo">
+    <img src="Black and White Modern Personal Logo.png">
+  </div>
+
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+  <nav class="nav-links" id="navLinks">
     <a href="index.html">Home</a>
     <a href="original.html">Original</a>
     <a href="gallery.html">Gallery</a>
     <a href="canvas.html">Canvas</a>
     <a href="about.html">About</a>
-  </div>
-</div>
+  </nav>
+
+</header>
 
 <!-- HERO -->
 <div class="hero">
@@ -172,22 +231,22 @@ img {
   </div>
 </div>
 
-<!-- ABOUT CONTENT -->
+<!-- ABOUT -->
 <div class="about">
   <h2>About NK Art Store 🎨</h2>
 
   <p>
-    NK Art Store is a platform dedicated to showcasing original handmade paintings and creative canvas artworks. 
-    Our goal is to bring unique and meaningful art closer to people who appreciate creativity and design.
+    NK Art Store is a platform dedicated to showcasing original handmade paintings and creative canvas artworks.
+    Our goal is to connect art lovers with unique and meaningful creations.
   </p>
 
   <p>
-    Each artwork available on this website is carefully created with attention to detail, ensuring quality, originality, and artistic value. 
-    We focus on providing art that enhances your living space and reflects your personality.
+    Every artwork is carefully designed to maintain originality, quality, and artistic value.
+    We believe art should enhance your space and express your personality.
   </p>
 
   <p>
-    We aim to create an experience where art is not just seen, but felt.
+    Our mission is to make art accessible, inspiring, and emotionally engaging.
   </p>
 </div>
 
@@ -196,16 +255,12 @@ img {
 
   <div class="box">
     <h3>🎨 What We Offer</h3>
-    <p>
-      A collection of original paintings, premium canvas artworks, and custom art services designed to meet different styles and preferences.
-    </p>
+    <p>Original paintings, canvas art, and custom artwork services.</p>
   </div>
 
   <div class="box">
-    <h3>✨ Why Choose This Platform</h3>
-    <p>
-      100% handmade artworks, unique designs, high-quality materials, and a direct connection between the artist and customers.
-    </p>
+    <h3>✨ Why Choose Us</h3>
+    <p>Handmade quality, unique designs, and direct artist connection.</p>
   </div>
 
 </div>
@@ -217,9 +272,17 @@ img {
 </div>
 
 <script>
+
+/* NAV TOGGLE */
+function toggleMenu(){
+  document.getElementById("navLinks").classList.toggle("show");
+}
+
+/* CTA */
 function contact(){
   alert("Contact me for custom artwork!");
 }
+
 </script>
 
 </body>
