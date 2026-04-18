@@ -14,12 +14,23 @@
   box-sizing: border-box;
   font-family:"Lucida Bright";
 }
-img {
-  max-width: 100%;
-  height: auto;
-}
 
 /* NAVBAR */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  color: white;
+  z-index: 1000;
+}
+
+/* LOGO */
 .logo {
   display: flex;
   align-items: center;
@@ -37,56 +48,57 @@ img {
   color: white;
 }
 
-/* ===== NAVBAR ===== */
-.navbar {
-  position: fixed;
-  top: 0;
-  width: 100%;
+/* NAV LINKS */
+.nav-links {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 50px;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(6px);
-  color: white;
-  z-index: 1000;
 }
-/* ===== NAVBAR LINKS TRANSITION ===== */
-.navbar nav a {
+
+.nav-links a {
   color: white;
   margin-left: 20px;
   text-decoration: none;
-  font-size: 14px;
   position: relative;
-  transition: all 0.3s ease;
-  padding: 5px 0;
+  transition: 0.3s;
 }
 
-/* Hover color + lift effect */
-.navbar nav a:hover {
-  color: #f7110d;
-  transform: translateY(-3px);
+.nav-links a:hover {
+  color: red;
 }
 
-/* Underline animation effect */
-.navbar nav a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -3px;
-  width: 0%;
-  height: 2px;
-  background: darkred;
-  transition: width 0.3s ease;
+/* HAMBURGER */
+.menu-toggle {
+  display: none;
+  font-size: 25px;
+  cursor: pointer;
 }
 
-/* Expand underline on hover */
-.navbar nav a:hover::after {
-  width: 100%;
+/* MOBILE */
+@media (max-width: 768px){
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: black;
+    flex-direction: column;
+    display: none;
+  }
+
+  .nav-links a {
+    padding: 15px;
+    border-top: 1px solid #333;
+    margin: 0;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
 }
-
-
-
 
 /* HEADER */
 .header {
@@ -100,21 +112,16 @@ img {
 }
 
 /* GALLERY */
-/* .gallery {
+.gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  padding: 20px;
-  gap: 20px;
-} */
- .gallery {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /*  2 cards per row */
+  grid-template-columns: repeat(2, 1fr);
   gap: 25px;
   padding: 20px;
 }
+
 @media (max-width: 600px) {
   .gallery {
-    grid-template-columns: 1fr;  /* 👈 1 card per row */
+    grid-template-columns: 1fr;
   }
 }
 
@@ -131,11 +138,7 @@ img {
   border-radius: 10px;
 }
 
-/* BUTTONS */
-.buttons {
-  margin-top: 10px;
-}
-
+/* BUTTON */
 button {
   padding: 8px 12px;
   margin: 5px;
@@ -148,10 +151,10 @@ button {
   background: #555;
   color: white;
 }
+
 .details:hover {
-  background: #333;          /* darker shade */
-  transform: scale(1.05);    /* thoda zoom */
-  transition: 0.3s;
+  background: #333;
+  transform: scale(1.05);
 }
 
 .cart {
@@ -183,21 +186,6 @@ button {
 .close {
   float: right;
   cursor: pointer;
-  font-size: 20px;
-}
-
-/* ORDER BUTTON */
-.order-btn {
-  background: darkred;
-  color: white;
-  margin-top: 10px;
-}
-
-/* RESPONSIVE */
-@media (max-width:600px){
-  .navbar {
-    flex-direction: column;
-  }
 }
 
 </style>
@@ -207,23 +195,27 @@ button {
 
 <!-- NAVBAR -->
 <header class="navbar">
+
   <div class="logo">
-    <img src="Black and White Modern Personal Logo.png" alt="NK Art Logo">
+    <img src="Black and White Modern Personal Logo.png">
   </div>
 
-  <nav>
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+  <nav class="nav-links" id="navLinks">
     <a href="index.html">Home</a>
     <a href="original.html">Original</a>
     <a href="gallery.html">Gallery</a>
     <a href="canvas.html">Canvas</a>
     <a href="about.html">About</a>
   </nav>
+
 </header>
+
 <!-- HEADER -->
 <div class="header">
-
   <h1>Original Paintings</h1>
-  <p>✔ 100% Original Handmade | ❌ No  Duplicate Prints Available</p>
+  <p>✔ 100% Original Handmade | ❌ No Duplicate Prints</p>
 </div>
 
 <!-- GALLERY -->
@@ -233,131 +225,32 @@ button {
     <img src="card2.jpg">
     <h3>Indian Woman</h3>
     <p>₹2200</p>
-
-    <div class="buttons">
-      <button class="details" onclick="openDetails('Silent Forest','₹2200','Acrylic on Canvas','Cixooman jifar')">Details</button>
-      <button class="cart">Add to Cart</button>
-    </div>
+    <button class="cart" onclick="addToCart('Indian Woman',2200)">Add to Cart</button>
   </div>
 
-  <div class="card">
-    <img src="cart1.webp">
-    <h3>Banaras Ghaat</h3>
-    <p>₹1800</p>
-
-    <div class="buttons">
-      <button class="details" onclick="openDetails('Golden Sunset','₹1800','Oil Painting','Vikram Dutta')">Details</button>
-      <button class="cart">Add to Cart</button>
-    </div>
-  </div> 
   <div class="card">
     <img src="card3.jpeg">
-    <h3>Oil pastle</h3>
+    <h3>Oil Pastel</h3>
     <p>₹1800</p>
-
-    <div class="buttons">
-      <button class="details" onclick="openDetails('Golden Sunset','₹1800','Oil Painting','Havish jhones')">Details</button>
-      <button class="cart">Add to Cart</button>
-    </div>
+    <button class="cart" onclick="addToCart('Oil Pastel',1800)">Add to Cart</button>
   </div>
 
-  <div class="card">
-    <img src="card4.webp">
-    <h3>Radha Krishna</h3>
-    <p>₹1800</p>
-
-    <div class="buttons">
-      <button class="details" onclick="openDetails('Golden Sunset','₹1800','Oil Painting','koshal jain')">Details</button>
-      <button class="cart">Add to Cart</button>
-    </div>
-  </div>
-<div class="card">
-    <img src="card5.webp">
-    <h3>Your view</h3>
-    <p>₹1800</p>
-
-    <div class="buttons">
-      <button class="details" onclick="openDetails('Golden Sunset','₹1800','Camle colours','visyavati shreebala')">Details</button>
-      <button class="cart">Add to Cart</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <img src="card6.webp">
-    <h3>laalimaa</h3>
-    <p>₹1800</p>
-
-    <div class="buttons">
-      <button class="details" onclick="openDetails('Golden Sunset','₹1800','Camle colours','hameenish fakir')">Details</button>
-      <button class="cart">Add to Cart</button>
-    </div>
-  </div>
-
-
-  <div class="card">
-    <img src="card7.webp">
-    <h3>Peace Home</h3>
-    <p>₹1800</p>
-
-    <div class="buttons">
-      <button class="details" onclick="openDetails('Golden Sunset','₹1800','Oil Painting','Robert jks')">Details</button>
-      <button class="cart">Add to Cart</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <img src="card8.webp">
-    <h3>Just faith</h3>
-    <p>₹1800</p>
-
-    <div class="buttons">
-      <button class="details" onclick="openDetails('Golden Sunset','₹1800','Water Colour','khanna ravi')">Details</button>
-      <button class="cart">Add to Cart</button>
-    </div>
-  </div>
-  
-
-  <div class="card">
-    <img src="card9.webp">
-    <h3>A girl</h3>
-    <p>₹1800</p>
-
-    <div class="buttons">
-      <button class="details" onclick="openDetails('Golden Sunset','₹1800','Oil Painting','mr. AR Ahmed')">Details</button>
-      <button class="cart">Add to Cart</button>
-    </div>
-  </div>
-
-  
-
-</div>
-
-<!-- MODAL -->
-<div id="modal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-
-    <h2 id="title"></h2>
-    <p id="price"></p>
-    <p id="desc"></p>
-    <p id="name"></p>
-
-    <button class="order-btn">Order Now</button>
-  </div>
 </div>
 
 <script>
 
-function openDetails(title, price, desc, name){
-  document.getElementById("title").innerText = title;
-  document.getElementById("price").innerText = price;
-  document.getElementById("desc").innerText = desc;
-  document.getElementById("name").innerText = name;
-  document.getElementById("modal").style.display = "flex";
+/* MENU TOGGLE */
+function toggleMenu(){
+  document.getElementById("navLinks").classList.toggle("show");
 }
 
-function closeModal(){
-  document.getElementById("modal").style.display = "none";
+/* CART */
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function addToCart(name, price){
+  cart.push({name, price});
+  localStorage.setItem("cart", JSON.stringify(cart));
+  alert(name + " added to cart 🛒");
 }
 
 </script>
