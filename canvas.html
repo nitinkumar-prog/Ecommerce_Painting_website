@@ -53,33 +53,56 @@ img {
   z-index: 1000;
 }
 
-.navbar nav a {
+/* NAV LINKS */
+.nav-links {
+  display: flex;
+}
+
+.nav-links a {
   color: white;
   margin-left: 20px;
   text-decoration: none;
-  font-size: 14px;
   position: relative;
-  transition: all 0.3s ease;
+  transition: 0.3s;
 }
 
-.navbar nav a:hover {
+.nav-links a:hover {
   color: #f7110d;
-  transform: translateY(-3px);
 }
 
-.navbar nav a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -3px;
-  width: 0%;
-  height: 2px;
-  background: darkred;
-  transition: width 0.3s ease;
+/* HAMBURGER */
+.menu-toggle {
+  display: none;
+  font-size: 25px;
+  cursor: pointer;
 }
 
-.navbar nav a:hover::after {
-  width: 100%;
+/* MOBILE NAV */
+@media (max-width: 768px){
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: black;
+    flex-direction: column;
+    display: none;
+  }
+
+  .nav-links a {
+    padding: 15px;
+    border-top: 1px solid #333;
+    margin: 0;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
 }
 
 /* HEADER */
@@ -91,42 +114,30 @@ img {
   align-items: center;
   position: relative;
 }
+
 .header::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(15, 15, 15, 0.5); /* dark overlay */
+  background: rgba(15,15,15,0.5);
 }
 
- .overlay-text h1 {
-    
+.overlay-text {
+  position: relative;
+  text-align: center;
+}
+
+.overlay-text h1 {
   color: darkred;
   font-size: 2.5rem;
-  font-family: "Lucida Bright";
   text-shadow: 2px 2px 5px white;
 }
 
-.overlay-text p{
-   color:#8b0000;
- 
-  font-family: "Lucida Bright";
-  text-align: center;
- 
+.overlay-text p {
+  color: #8b0000;
 }
-  
 
-@media (max-width:600px){
-  .header {
-    height: 50vh;
-  }
-
-  .overlay-text h1 {
-    font-size: 1.6rem;
-  }
-}
 /* GALLERY */
 .gallery {
   display: grid;
@@ -135,7 +146,6 @@ img {
   padding: 30px;
 }
 
-/* CARD */
 .card {
   border: 1px solid #ddd;
   border-radius: 10px;
@@ -154,13 +164,8 @@ img {
   object-fit: cover;
 }
 
-.card h3 {
-  margin-top: 10px;
-}
-
 .card p {
   color: darkred;
-  margin: 5px 0;
 }
 
 /* BUTTON */
@@ -168,39 +173,7 @@ img {
   padding: 8px 15px;
   background: darkred;
   color: white;
-  border: none;
   border-radius: 20px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.card button:hover {
-  background: #8b0000;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-}
-
-/* WHY SECTION */
-.why {
-  background: #f5f5f5;
-  padding: 40px;
-  text-align: center;
-}
-
-.why li {
-  margin: 10px 0;
-}
-
-/* CUSTOM */
-.custom {
-  text-align: center;
-  padding: 40px;
-}
-
-.custom button {
-  padding: 12px 25px;
-  background: black;
-  color: white;
   border: none;
   cursor: pointer;
 }
@@ -209,8 +182,6 @@ img {
 .modal {
   display: none;
   position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   background: rgba(0,0,0,0.6);
@@ -226,20 +197,6 @@ img {
   text-align: center;
 }
 
-.close {
-  float: right;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.order-btn {
-  background: darkred;
-  color: white;
-  margin-top: 10px;
-  padding: 10px;
-  border: none;
-}
-
 /* RESPONSIVE */
 @media (max-width: 992px) {
   .gallery {
@@ -248,13 +205,12 @@ img {
 }
 
 @media (max-width: 600px) {
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
   .gallery {
     grid-template-columns: 1fr;
+  }
+
+  .overlay-text h1 {
+    font-size: 1.6rem;
   }
 }
 
@@ -265,17 +221,21 @@ img {
 
 <!-- NAVBAR -->
 <header class="navbar">
+
   <div class="logo">
     <img src="Black and White Modern Personal Logo.png">
   </div>
 
-  <nav>
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+  <nav class="nav-links" id="navLinks">
     <a href="index.html">Home</a>
     <a href="original.html">Original</a>
     <a href="gallery.html">Gallery</a>
     <a href="canvas.html">Canvas</a>
     <a href="about.html">About</a>
   </nav>
+
 </header>
 
 <!-- HEADER -->
@@ -293,62 +253,36 @@ img {
     <img src="card2.jpg">
     <h3>Silent Forest</h3>
     <p>₹2200</p>
-    <p>12x16 inch | Acrylic</p>
-    <button onclick="openDetails('Silent Forest','₹2200','12x16 inch | Acrylic on Canvas')">View Details</button>
+    <button onclick="openDetails('Silent Forest','₹2200','Acrylic')">View Details</button>
   </div>
 
   <div class="card">
     <img src="card3.jpeg">
     <h3>Golden Sunset</h3>
     <p>₹1800</p>
-    <p>10x14 inch | Oil</p>
-    <button onclick="openDetails('Golden Sunset','₹1800','10x14 inch | Oil Painting')">View Details</button>
+    <button onclick="openDetails('Golden Sunset','₹1800','Oil')">View Details</button>
   </div>
 
-  <div class="card">
-    <img src="cart1.webp">
-    <h3>Bnaras Ghaat</h3>
-    <p>₹2500</p>
-    <p>Modern Canvas Art</p>
-    <button onclick="openDetails('Bnaras Ghaat','₹2500','Premium Canvas Artwork')">View Details</button>
-  </div>
-
-</div>
-
-<!-- WHY -->
-<div class="why">
-  <h2>Why Choose Canvas Art?</h2>
-  <ul>
-    <li>✔ Long lasting quality</li>
-    <li>✔ Premium look for home decor</li>
-    <li>✔ 100% handmade artwork</li>
-    <li>✔ Unique and original designs</li>
-  </ul>
-</div>
-
-<!-- CUSTOM -->
-<div class="custom">
-  <h2>Want a Custom Painting?</h2>
-  <button onclick="orderNow()">Request Custom Canvas</button>
 </div>
 
 <!-- MODAL -->
 <div id="modal" class="modal">
   <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
     <h2 id="title"></h2>
     <p id="price"></p>
     <p id="desc"></p>
-    <button class="order-btn">Order Now</button>
+    <button onclick="closeModal()">Close</button>
   </div>
 </div>
 
 <script>
 
-function orderNow(){
-  alert("Contact via WhatsApp for custom order!");
+/* NAV */
+function toggleMenu(){
+  document.getElementById("navLinks").classList.toggle("show");
 }
 
+/* MODAL */
 function openDetails(title, price, desc){
   document.getElementById("title").innerText = title;
   document.getElementById("price").innerText = price;
