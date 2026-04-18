@@ -13,9 +13,9 @@
   padding: 0;
   box-sizing: border-box;
   font-family: "Lucida Bright";
-
 }
 
+/* LOGO */
 .logo {
   display: flex;
   align-items: center;
@@ -33,7 +33,7 @@
   color: white;
 }
 
-/* ===== NAVBAR ===== */
+/* NAVBAR */
 .navbar {
   position: fixed;
   top: 0;
@@ -47,40 +47,58 @@
   color: white;
   z-index: 1000;
 }
-/* ===== NAVBAR LINKS TRANSITION ===== */
-.navbar nav a {
+
+/* NAV LINKS */
+.nav-links {
+  display: flex;
+}
+
+.nav-links a {
   color: white;
   margin-left: 20px;
   text-decoration: none;
-  font-size: 14px;
   position: relative;
-  transition: all 0.3s ease;
-  padding: 5px 0;
+  transition: 0.3s;
 }
 
-/* Hover color + lift effect */
-.navbar nav a:hover {
+.nav-links a:hover {
   color: #f7110d;
-  transform: translateY(-3px);
 }
 
-/* Underline animation effect */
-.navbar nav a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -3px;
-  width: 0%;
-  height: 2px;
-  background: darkred;
-  transition: width 0.3s ease;
+/* HAMBURGER */
+.menu-toggle {
+  display: none;
+  font-size: 25px;
+  cursor: pointer;
 }
 
-/* Expand underline on hover */
-.navbar nav a:hover::after {
-  width: 100%;
-}
+/* MOBILE NAV */
+@media (max-width: 768px){
 
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: black;
+    flex-direction: column;
+    display: none;
+  }
+
+  .nav-links a {
+    padding: 15px;
+    border-top: 1px solid #333;
+    margin: 0;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+}
 
 /* HEADER */
 .header {
@@ -93,19 +111,12 @@
   font-size: 2.2rem;
   color: #580908;
 }
-.header p{
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
-}
 
-/* FEATURED ART */
+/* FEATURED */
 .featured {
   padding: 30px;
   text-align: center;
-  text-shadow: 2px 2px 5px rgba(229, 8, 8, 0.5);
-  font-size: 20px;
- 
 }
-
 
 .featured img {
   width: 80%;
@@ -113,7 +124,7 @@
   border-radius: 10px;
 }
 
-/* GALLERY GRID */
+/* GALLERY */
 .gallery {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -166,89 +177,20 @@
   border: none;
   cursor: pointer;
 }
-/* ================= RESPONSIVE ================= */
-
-/* Tablet */
-@media (max-width: 992px) {
-
-  .navbar {
-    padding: 15px 20px;
-  }
-
-  .header {
-    padding: 25px;
-  }
-
-  .featured img {
-    width: 90%;
-  }
-
-  .gallery {
-    grid-template-columns: repeat(2, 1fr); /* 2 per row */
-  }
-
-  .review-box {
-    max-width: 90%;
-  }
-}
-
-/* Mobile */
-@media (max-width: 600px) {
-
-  /* Navbar */
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .navbar div {
-    margin-top: 10px;
-  }
-
-  .navbar a {
-    margin-left: 0;
-    margin-right: 15px;
-  }
-
-  /* Header */
-  .header h1 {
-    font-size: 1.6rem;
-  }
-
-  .header p {
-    font-size: 14px;
-  }
-
-  /* Featured */
-  .featured img {
-    width: 100%;
-  }
-
-  /* Gallery */
-  .gallery {
-    grid-template-columns: 1fr; /* 1 per row */
-  }
-
-  /* Reviews */
-  .reviews {
-    padding: 20px;
-  }
-
-  .review-box {
-    width: 100%;
-  }
-
-  /* Form */
-  .form input,
-  .form textarea {
-    width: 95%;
-  }
-}
 
 /* RESPONSIVE */
-@media (max-width:600px){
-  .navbar {
-    flex-direction: column;
+@media (max-width: 600px) {
+
+  .gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .featured img {
+    width: 100%;
+  }
+
+  .header h1 {
+    font-size: 1.6rem;
   }
 }
 
@@ -259,17 +201,21 @@
 
 <!-- NAVBAR -->
 <header class="navbar">
+
   <div class="logo">
-    <img src="Black and White Modern Personal Logo.png" alt="NK Art Logo">
+    <img src="Black and White Modern Personal Logo.png">
   </div>
 
-  <nav>
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+  <nav class="nav-links" id="navLinks">
     <a href="index.html">Home</a>
     <a href="original.html">Original</a>
     <a href="gallery.html">Gallery</a>
     <a href="canvas.html">Canvas</a>
     <a href="about.html">About</a>
   </nav>
+
 </header>
 
 <!-- HEADER -->
@@ -278,7 +224,7 @@
   <p>Explore our best artworks and customer experiences</p>
 </div>
 
-<!-- FEATURED ART -->
+<!-- FEATURED -->
 <div class="featured">
   <h2>Featured Artwork</h2>
   <img src="card2.jpg">
@@ -296,13 +242,13 @@
 <div class="reviews">
   <h2>Customer Reviews</h2>
 
-  <div class="review-box">⭐️⭐️⭐️⭐️⭐️Rihaan: Amazing artwork!</div>
-  <div class="review-box">⭐️⭐️⭐️⭐️⭐️Sara: Loved the quality!</div>
+  <div class="review-box">⭐️⭐️⭐️⭐️⭐️ Rihaan: Amazing artwork!</div>
+  <div class="review-box">⭐️⭐️⭐️⭐️⭐️ Sara: Loved the quality!</div>
 
   <div id="newReviews"></div>
 </div>
 
-<!-- REVIEW FORM -->
+<!-- FORM -->
 <div class="form">
   <h2>Leave a Review</h2>
   
@@ -314,17 +260,23 @@
 
 <script>
 
+/* MENU */
+function toggleMenu(){
+  document.getElementById("navLinks").classList.toggle("show");
+}
+
+/* REVIEW */
 function addReview(){
   let name = document.getElementById("name").value;
   let review = document.getElementById("review").value;
 
   if(name === "" || review === "") return;
 
-  let newReview = document.createElement("div");
-  newReview.classList.add("review-box");
-  newReview.innerText = "⭐️⭐️⭐️⭐️⭐️ " + name + ": " + review;
+  let div = document.createElement("div");
+  div.classList.add("review-box");
+  div.innerText = "⭐️⭐️⭐️⭐️⭐️ " + name + ": " + review;
 
-  document.getElementById("newReviews").appendChild(newReview);
+  document.getElementById("newReviews").appendChild(div);
 
   document.getElementById("name").value = "";
   document.getElementById("review").value = "";
