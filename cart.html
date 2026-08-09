@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - NK Art Store</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial;
+        }
+
+        .logo { display: flex; align-items: center; }
+        .logo img { width: 45px; margin-right: 10px; }
+        .logo::after {
+            content: "NK Art Store";
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(6px);
+            color: white;
+            z-index: 1000;
+        }
+
+        .navbar nav a {
+            color: white;
+            margin-left: 20px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .navbar nav a:hover { color: #f7110d; }
+
+        .header {
+            text-align: center;
+            padding: 40px;
+            margin-top: 100px;
+        }
+
+        .header h1 { color: darkred; font-size: 2rem; }
+
+        .cart-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f9f9f9;
+            padding: 15px 20px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .cart-item h3 { color: #333; }
+        .cart-item p { color: darkred; font-weight: bold; }
+
+        .remove-btn {
+            padding: 8px 15px;
+            background: darkred;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .remove-btn:hover { background: black; }
+
+        .total-section {
+            text-align: right;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: darkred;
+        }
+
+        .clear-btn {
+            display: block;
+            margin: 10px auto;
+            padding: 12px 25px;
+            background: black;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        .clear-btn:hover { background: darkred; }
+
+        .empty-msg {
+            text-align: center;
+            padding: 50px;
+            color: #888;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+    <div class="logo">
+        <img src="Black and White Modern Personal Logo.png">
+    </div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="original.html">Original</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="canvas.html">Canvas</a>
+        <a href="about.html">About</a>
+        <a href="cart.html">🛒 Cart</a>
+    </nav>
+</header>
+
+<!-- HEADER -->
+<div class="header">
+    <h1>🛒 My Cart</h1>
+</div>
+
+<!-- CART ITEMS -->
+<div class="cart-container" id="cartContainer">
+    <p class="empty-msg">Loading cart... 🛒</p>
+</div>
+
+<!-- TOTAL -->
+<div class="total-section" id="totalSection"></div>
+
+<!-- CLEAR CART BUTTON -->
+<button class="clear-btn" onclick="clearCart()">
+    Clear Cart 🗑️
+</button>
+
+<script>
+
+    const API_URL = 'http://localhost:8081';
+
+    /* CART LOAD KARO */
+    function loadCart() {
+        fetch(`${API_URL}/api/cart`)
+            .then(res => res.json())
+            .then(items => {
+                const container = document.getElementById('cartContainer');
+                const totalSection = document.getElementById('totalSection');
+
+                if(items.length === 0) {
+                    container.innerHTML = '<p class="empty-msg">Cart is empty 🛒</p>';
+                    totalSection.innerHTML = '';
+                    return;
+                }
+
+                container.innerHTML = items.map(item => `
+      <div class="cart-item">
+        <div>
+          <h3>${item.paintingName}</h3>
+          <p>₹${item.price}</p>
+        </div>
+        <button class="remove-btn"
+          onclick="removeItem(${item.id})">
+          Remove ❌
+        </button>
+      </div>
+    `).join('');
+
+                const total = items.reduce((sum, item) => sum + item.price, 0);
+                totalSection.innerHTML = `Total: ₹${total}`;
+            })
+            .catch(err => console.log('Error:', err));
+    }
+
+    /* ITEM REMOVE KARO */
+    function removeItem(id) {
+        fetch(`${API_URL}/api/cart/${id}`, {
+            method: 'DELETE'
+        })
+            .then(() => loadCart());
+    }
+
+    /* CART CLEAR KARO */
+    function clearCart() {
+        fetch(`${API_URL}/api/cart/clear`, {
+            method: 'DELETE'
+        })
+            .then(() => loadCart());
+    }
+
+    loadCart();
+
+</script>
+
+</body>
+</html>

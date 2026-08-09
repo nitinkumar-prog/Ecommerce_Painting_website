@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Original Paintings</title>
+
+  <style>
+
+    /* RESET */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family:"Lucida Bright";
+    }
+
+    /* NAVBAR */
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 50px;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(6px);
+      color: white;
+      z-index: 1000;
+    }
+
+    /* LOGO */
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo img {
+      width: 45px;
+      margin-right: 10px;
+    }
+
+    .logo::after {
+      content: "NK Art Store";
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+    }
+
+    /* NAV LINKS */
+    .nav-links {
+      display: flex;
+    }
+
+    .nav-links a {
+      color: white;
+      margin-left: 20px;
+      text-decoration: none;
+      position: relative;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: red;
+    }
+
+    /* HAMBURGER */
+    .menu-toggle {
+      display: none;
+      font-size: 25px;
+      cursor: pointer;
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px){
+      .menu-toggle { display: block; }
+      .nav-links {
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: black;
+        flex-direction: column;
+        display: none;
+      }
+      .nav-links a {
+        padding: 15px;
+        border-top: 1px solid #333;
+        margin: 0;
+      }
+      .nav-links.show { display: flex; }
+    }
+
+    /* HEADER */
+    .header {
+      text-align: center;
+      padding: 30px;
+      margin-top: 100px;
+    }
+
+    .header p { color: darkred; }
+
+    /* GALLERY */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 25px;
+      padding: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .gallery { grid-template-columns: 1fr; }
+    }
+
+    /* CARD */
+    .card {
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    /* BUTTON */
+    button {
+      padding: 8px 12px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .cart {
+      background: darkred;
+      color: white;
+    }
+
+    /* Loading */
+    .loading {
+      text-align: center;
+      padding: 50px;
+      color: darkred;
+      font-size: 1.2rem;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="logo">
+    <img src="Black and White Modern Personal Logo.png">
+  </div>
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+  <nav class="nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="original.html">Original</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="canvas.html">Canvas</a>
+    <a href="about.html">About</a>
+    <a href="cart.html">🛒cart</a>
+  </nav>
+</header>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>Original Paintings</h1>
+  <p>✔ 100% Original Handmade | ❌ No Duplicate Prints</p>
+</div>
+
+<!-- GALLERY — API se load hoga! -->
+<div class="gallery" id="paintingGallery">
+  <p class="loading">Loading paintings... 🎨</p>
+</div>
+
+<script>
+
+  const API_URL = 'http://localhost:8081';
+
+  /* MENU TOGGLE */
+  function toggleMenu(){
+    document.getElementById("navLinks").classList.toggle("show");
+  }
+
+  /* API SE PAINTINGS LOAD KARO */
+  function loadPaintings() {
+    fetch(`${API_URL}/api/paintings/category/original`)
+            .then(res => res.json())
+            .then(paintings => {
+              const gallery = document.getElementById('paintingGallery');
+
+              if(paintings.length === 0) {
+                gallery.innerHTML = '<p class="loading">Koi painting nahi mili!</p>';
+                return;
+              }
+
+              gallery.innerHTML = paintings.map(p => `
+      <div class="card">
+        <img src="${p.imageUrl}" alt="${p.title}">
+        <h3>${p.title}</h3>
+        <p>₹${p.price}</p>
+        <button class="cart"
+          onclick="addToCart('${p.title}', ${p.price})">
+          Add to Cart 🛒
+        </button>
+      </div>
+    `).join('');
+            })
+            .catch(err => {
+              document.getElementById('paintingGallery').innerHTML =
+                      '<p class="loading">Error loading paintings!</p>';
+              console.log('Error:', err);
+            });
+  }
+
+  /* ADD TO CART */
+  function addToCart(name, price) {
+    fetch(`${API_URL}/api/cart`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        paintingName: name,
+        price: price
+      })
+    })
+            .then(res => res.json())
+            .then(() => {
+              alert(name + " added to cart 🛒");
+            })
+            .catch(err => {
+              console.log('Error:', err);
+              alert("Error! Console check karo!");
+            });
+  }
+
+  loadPaintings();
+
+</script>
+</body>
+</html>

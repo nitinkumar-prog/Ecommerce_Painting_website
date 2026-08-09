@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About - NK Art Store</title>
+
+<style>
+
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family:"Lucida Bright";
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* LOGO */
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  width: 45px;
+  margin-right: 10px;
+}
+
+.logo::after {
+  content: "NK Art Store";
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+}
+
+/* NAVBAR */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  color: white;
+  z-index: 1000;
+}
+
+/* NAV LINKS */
+.nav-links {
+  display: flex;
+}
+
+.nav-links a {
+  color: white;
+  margin-left: 20px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.nav-links a:hover {
+  color: red;
+}
+
+/* HAMBURGER */
+.menu-toggle {
+  display: none;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+/* MOBILE NAV */
+@media (max-width: 768px){
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: black;
+    flex-direction: column;
+    display: none;
+  }
+
+  .nav-links a {
+    padding: 15px;
+    border-top: 1px solid #333;
+    margin: 0;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+}
+
+/* HERO */
+.hero {
+  height: 60vh;
+  background: url('heroBG.jpg') center/cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+}
+
+.hero-text {
+  position: relative;
+  color: white;
+  text-align: center;
+  background: rgba(255,255,255,0.1);
+  padding: 30px;
+  border-radius: 10px;
+  backdrop-filter: blur(6px);
+}
+
+.hero-text h1 {
+  font-size: 2.5rem;
+}
+
+/* ABOUT */
+.about {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.about p {
+  max-width: 750px;
+  margin: 15px auto;
+  color: #444;
+  line-height: 1.6;
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+  padding: 30px;
+}
+
+.box {
+  background: #f5f5f5;
+  padding: 25px;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.box:hover {
+  transform: translateY(-5px);
+}
+
+/* CTA */
+.cta {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.cta button {
+  padding: 12px 25px;
+  background: darkred;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.cta button:hover {
+  background: black;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-text h1 {
+    font-size: 1.8rem;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+
+  <div class="logo">
+    <img src="Black and White Modern Personal Logo.png">
+  </div>
+
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+  <nav class="nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="original.html">Original</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="canvas.html">Canvas</a>
+    <a href="about.html">About</a>
+    <a href="cart.html">🛒 Cart</a>
+  </nav>
+
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-text">
+    <h1>About NK Art Store</h1>
+    <p>Where Creativity Meets Expression</p>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="about">
+  <h2>About NK Art Store 🎨</h2>
+
+  <p>
+    NK Art Store is a platform dedicated to showcasing original handmade paintings and creative canvas artworks.
+    Our goal is to connect art lovers with unique and meaningful creations.
+  </p>
+
+  <p>
+    Every artwork is carefully designed to maintain originality, quality, and artistic value.
+    We believe art should enhance your space and express your personality.
+  </p>
+
+  <p>
+    Our mission is to make art accessible, inspiring, and emotionally engaging.
+  </p>
+</div>
+
+<!-- GRID -->
+<div class="grid">
+
+  <div class="box">
+    <h3>🎨 What We Offer</h3>
+    <p>Original paintings, canvas art, and custom artwork services.</p>
+  </div>
+
+  <div class="box">
+    <h3>✨ Why Choose Us</h3>
+    <p>Handmade quality, unique designs, and direct artist connection.</p>
+  </div>
+
+</div>
+
+<!-- CTA -->
+<div class="cta">
+  <h2>Want a Custom Painting?</h2>
+  <button onclick="contact()">Contact Me</button>
+</div>
+
+<script>
+
+/* NAV TOGGLE */
+function toggleMenu(){
+  document.getElementById("navLinks").classList.toggle("show");
+}
+
+/* CTA */
+function contact(){
+  alert("Contact me for custom artwork!");
+}
+
+</script>
+
+</body>
+</html>

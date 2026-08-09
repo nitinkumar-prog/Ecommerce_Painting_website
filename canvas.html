@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas Paintings</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial;
+    }
+
+    img { max-width: 100%; height: auto; }
+
+    .logo { display: flex; align-items: center; }
+    .logo img { width: 45px; margin-right: 10px; }
+    .logo::after {
+      content: "NK Art Store";
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 50px;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(6px);
+      color: white;
+      z-index: 1000;
+    }
+
+    .navbar nav a {
+      color: white;
+      margin-left: 20px;
+      text-decoration: none;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .navbar nav a:hover { color: #f7110d; }
+
+    .header {
+      height: 60vh;
+      background: url('bgcanva.avif') center/cover no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .header::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(15,15,15,0.5);
+    }
+
+    .overlay-text { position: relative; text-align: center; }
+
+    .overlay-text h1 {
+      color: darkred;
+      font-size: 2.5rem;
+      font-family: "Lucida Bright";
+      text-shadow: 2px 2px 5px white;
+    }
+
+    .overlay-text p {
+      color: #8b0000;
+      font-family: "Lucida Bright";
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+      padding: 30px;
+    }
+
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      text-align: center;
+      padding-bottom: 15px;
+      transition: 0.3s;
+    }
+
+    .card:hover { transform: translateY(-5px); }
+
+    .card img { height: 220px; object-fit: cover; width: 100%; }
+
+    .card h3 { margin-top: 10px; }
+
+    .card p { color: darkred; margin: 5px 0; }
+
+    .card button {
+      padding: 8px 15px;
+      background: darkred;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .card button:hover {
+      background: #8b0000;
+      transform: translateY(-2px);
+    }
+
+    .why {
+      background: #f5f5f5;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .why li { margin: 10px 0; }
+
+    .custom { text-align: center; padding: 40px; }
+
+    .custom button {
+      padding: 12px 25px;
+      background: black;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 50px;
+      color: darkred;
+      font-size: 1.2rem;
+    }
+
+    @media (max-width: 992px) {
+      .gallery { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      .navbar { flex-direction: column; align-items: flex-start; }
+      .gallery { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="logo">
+    <img src="Black and White Modern Personal Logo.png">
+  </div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="original.html">Original</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="canvas.html">Canvas</a>
+    <a href="about.html">About</a>
+    <a href="cart.html">🛒 Cart</a>
+  </nav>
+</header>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="overlay-text">
+    <h1>Canvas Paintings</h1>
+    <p>Premium handmade canvas artworks</p>
+  </div>
+</div>
+
+<!-- GALLERY — API se load hoga! -->
+<div class="gallery" id="canvasGallery">
+  <p class="loading">Loading paintings... 🎨</p>
+</div>
+
+<!-- WHY -->
+<div class="why">
+  <h2>Why Choose Canvas Art?</h2>
+  <ul>
+    <li>✔ Long lasting quality</li>
+    <li>✔ Premium look for home decor</li>
+    <li>✔ 100% handmade artwork</li>
+    <li>✔ Unique and original designs</li>
+  </ul>
+</div>
+
+<!-- CUSTOM -->
+<div class="custom">
+  <h2>Want a Custom Painting?</h2>
+  <button onclick="orderNow()">Request Custom Canvas</button>
+</div>
+
+<script>
+
+  const API_URL = 'http://localhost:8081';
+
+  function orderNow(){
+    alert("Contact via WhatsApp for custom order!");
+  }
+
+  /* API SE CANVAS PAINTINGS LOAD KARO */
+  function loadCanvasPaintings() {
+    fetch(`${API_URL}/api/paintings/category/canvas`)
+            .then(res => res.json())
+            .then(paintings => {
+              const gallery = document.getElementById('canvasGallery');
+
+              if(paintings.length === 0) {
+                gallery.innerHTML = '<p class="loading">Koi painting nahi mili!</p>';
+                return;
+              }
+
+              gallery.innerHTML = paintings.map(p => `
+      <div class="card">
+        <img src="${p.imageUrl}" alt="${p.title}">
+        <h3>${p.title}</h3>
+        <p>₹${p.price}</p>
+        <p>${p.description}</p>
+        <button onclick="addToCart('${p.title}', ${p.price})">
+          Add to Cart 🛒
+        </button>
+      </div>
+    `).join('');
+            })
+            .catch(err => {
+              document.getElementById('canvasGallery').innerHTML =
+                      '<p class="loading">Error loading paintings!</p>';
+              console.log('Error:', err);
+            });
+  }
+
+  /* ADD TO CART */
+  function addToCart(name, price) {
+    fetch(`${API_URL}/api/cart`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        paintingName: name,
+        price: price
+      })
+    })
+            .then(res => res.json())
+            .then(() => {
+              alert(name + " added to cart 🛒");
+            })
+            .catch(err => {
+              console.log('Error:', err);
+              alert("Error! Console check karo!");
+            });
+  }
+
+  loadCanvasPaintings();
+
+</script>
+</body>
+</html>

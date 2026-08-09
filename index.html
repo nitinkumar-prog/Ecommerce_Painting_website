@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NK Art Store</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<header class="navbar">
+  <div class="logo">
+    <img src="Black and White Modern Personal Logo.png" alt="NK Art Logo">
+  </div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="original.html">Original</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="canvas.html">Canvas</a>
+    <a href="about.html">About</a>
+    <a href="cart.html">🛒 Cart</a>
+  </nav>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="overlay">
+    <h1>NK ORIGINAL<br>ARTWORKS</h1>
+    <p id="typing-text"></p>
+    <button onclick="window.location.href='original.html'">
+      View The Collection
+    </button>
+  </div>
+</section>
+
+<!-- Products Section -->
+<section class="products">
+  <h2>New Releases</h2>
+  <div class="product-grid" id="homeGallery">
+    <p style="text-align:center; color:darkred;">
+      Loading paintings... 🎨
+    </p>
+  </div>
+</section>
+
+<script src="script.js"></script>
+
+<script>
+  /* API SE PAINTINGS LOAD KARO */
+  function loadHomePaintings() {
+    fetch('http://localhost:8081/api/paintings')
+            .then(res => res.json())
+            .then(paintings => {
+              const grid = document.getElementById('homeGallery');
+
+              if(paintings.length === 0) {
+                grid.innerHTML = '<p style="text-align:center">Koi painting nahi!</p>';
+                return;
+              }
+
+              // Sirf pehli 3 paintings dikhao home page pe
+              const first3 = paintings.slice(0, 3);
+
+              grid.innerHTML = first3.map(p => `
+      <div class="card">
+        <img src="${p.imageUrl}" alt="${p.title}">
+        <div class="card-info">
+          <p>${p.title}</p>
+          <span>₹${p.price}</span>
+        </div>
+        <button onclick="addToCart('${p.title}', ${p.price})">
+          Add to Cart 🛒
+        </button>
+      </div>
+    `).join('');
+            })
+            .catch(err => console.log('Error:', err));
+  }
+
+  loadHomePaintings();
+</script>
+
+</body>
+</html>
